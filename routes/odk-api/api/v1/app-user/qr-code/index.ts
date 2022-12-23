@@ -1,15 +1,15 @@
 // @ts-check
-
 import { FastifyInstance } from "fastify";
 
-import { axGetAppUserByEmail, axGetllAppUser } from "../../../../../../services/odk.service";
+import { getAllOdkUser } from "../../../../../../controller/user.controller";
+import { axGetAppUserByEmail } from "../../../../../../services/odk.service";
 import getVerifiedUser from "../../../../../../utils/jwt";
 import getQRSVG from "../../../../../../utils/qrcode";
 
 export default async function (fastify: FastifyInstance) {
   fastify.get("/all", async function (request, reply) {
     try {
-      const user = await axGetllAppUser();
+      const user = await getAllOdkUser();
       reply.code(200).send(user);
     } catch (e) {
       console.error("My error code is", e);
