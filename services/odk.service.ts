@@ -1,22 +1,34 @@
 // @ts-check
-import { ODK_OPTS, REQ_OPTS } from "../static/constants";
+import { ODK_OPTS, ODK_USER_CREDENTIALS, REQ_OPTS } from "../static/constants";
 import http from "../utils/http";
 
-export const axGetAppUserByEmail = async (email: string, xmlFormId: number, projectId: number) => {
+export const axGetAppUserByEmail = async (
+  email: string,
+  projectId: number,
+  canCreate: boolean,
+  xmlFormId?: number
+) => {
   const res = await http.get(`${ODK_OPTS.URL}v1/projects/${projectId}/app-users`, REQ_OPTS);
 
   // Creates app user if not exist
   let appUser = res.data.find((au: any) => au.token && au.displayName === email);
-  if (!appUser) {
+  if (!appUser && canCreate) {
     appUser = await axCreateAppUser(email, projectId);
   }
 
-  // Add permission if not exist
-  await axAssignUserToForm(projectId, xmlFormId, appUser.id);
+  if (canCreate && xmlFormId) {
+    // Add permission if not exist
+    await axAssignUserToForm(projectId, xmlFormId, appUser.id);
+  }
 
   const projectName = await axGetProjectName(projectId);
 
   return { ...appUser, projectName };
+};
+
+export const axGetWebUserByEmail = async (email: string) => {
+  const res = await http.get(`${ODK_OPTS.URL}/v1/users?q=${email}`, REQ_OPTS);
+  return res.data;
 };
 
 export const axGetllAppUser = async () => {
@@ -31,6 +43,16 @@ export const axGetllUser = async () => {
   return res.data;
 };
 
+export const axCreateWebUser = async (email: string) => {
+  const res = await http.post(
+    `${ODK_OPTS.URL}v1/v1/users`,
+    { email, password: ODK_USER_CREDENTIALS.PASSWORD },
+    REQ_OPTS
+  );
+
+  return res.data;
+};
+
 export const axCreateAppUser = async (displayName: string, projectId: number) => {
   const res = await http.post(
     `${ODK_OPTS.URL}v1/projects/${projectId}/app-users`,
@@ -39,6 +61,14 @@ export const axCreateAppUser = async (displayName: string, projectId: number) =>
   );
 
   return res.data;
+};
+
+export const axRemoveWebUser = async (userId: string) => {
+  return await http.delete(`${ODK_OPTS.URL}v1/users/${userId}`, REQ_OPTS);
+};
+
+export const axRemoveAppUser = async (userId: string, projectId: string) => {
+  return await http.delete(`${ODK_OPTS.URL}v1/projects/${projectId}/app-users/${userId}`, REQ_OPTS);
 };
 
 export const axAssignUserToForm = async (
