@@ -12,6 +12,7 @@ import {
 import {
   createOdkUserMapping,
   deleteOdkAppUserMappings,
+  deleteOdkWebUserMappings,
   getOdkAppUserMappingsBySuserId,
   getOdkWebUserMappingsBySuserId
 } from "../services/suser-odk-mapping.service";
@@ -33,7 +34,7 @@ export const createOdkUser = async (createOdkUser: OdkUserInterface) => {
   const { email, projectId, sUserId } = createOdkUser;
   if (projectId) {
     let user = await axGetAppUserByEmail(email, Number(projectId), false);
-    if (user) {
+    if (user?.token) {
       throw new Error(`User already present for ${email} and projectId ${projectId}`);
     }
 
@@ -50,11 +51,12 @@ export const createOdkUser = async (createOdkUser: OdkUserInterface) => {
     }
   } else {
     let user = await axGetWebUserByEmail(email);
-    if (user) {
+
+    if (user && user.length > 0) {
       throw new Error(`User already present for username ${email}`);
     }
 
-    user = await axCreateWebUser(email);
+    user = await axCreateWebUser(createOdkUser);
 
     if (user) {
       const payload = {
@@ -82,31 +84,42 @@ export const getAllOdkUser = async () => {
 export const deleteOdkWebUser = async (sUserId: number, email: string) => {
   try {
     const user = await axGetWebUserByEmail(email);
+
     const userOdkMapping = await getOdkWebUserMappingsBySuserId(sUserId);
-    if (!user && userOdkMapping && !userOdkMapping.id) throw new Error("Web user does not exsist");
-    const isDeleted = await axRemoveWebUser(user.id);
+    if (user?.length <= 0 && userOdkMapping.length <= 0) {
+      throw new Error("Web user does not exsist");
+    }
+    const isDeleted = await axRemoveWebUser(user[0].id);
 
     if (isDeleted) {
-      return await deleteOdkAppUserMappings(Number(userOdkMapping.id));
+      const data = await deleteOdkWebUserMappings(userOdkMapping[0].id);
+      if (data) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { token, ...responsePayload } = user[0];
+        return { ...responsePayload };
+      }
     } else {
       throw new Error("Unbale to delete web users");
     }
   } catch (error) {
-    throw new Error("Unbale to delete web users");
+    throw new Error(`Unbale to delete web users`);
   }
 };
 
 export const deleteOdkAppUser = async (userName: string, projectId: string) => {
   try {
     const user = await axGetAppUserByEmail(userName, Number(projectId), false);
-    const appUserOdkMapping = await getOdkAppUserMappingsBySuserId(user.id, Number(projectId));
+    const appUserOdkMapping: any[] = await getOdkAppUserMappingsBySuserId(
+      user.id,
+      Number(projectId)
+    );
 
-    if (!user && appUserOdkMapping && appUserOdkMapping.id)
+    if (user?.length <= 0 && appUserOdkMapping?.length <= 0)
       throw new Error("App User does not exsist");
     const isDeleted = await axRemoveAppUser(user.id, projectId);
 
     if (isDeleted) {
-      return await deleteOdkAppUserMappings(Number(appUserOdkMapping.id));
+      return await deleteOdkAppUserMappings(Number(appUserOdkMapping[0].id));
     } else {
       throw new Error("Unbale to delete web users");
     }

@@ -1,4 +1,5 @@
 // @ts-check
+import { OdkUserInterface } from "../controller/odk.controller";
 import { ODK_OPTS, ODK_USER_CREDENTIALS, REQ_OPTS } from "../static/constants";
 import http from "../utils/http";
 
@@ -27,8 +28,12 @@ export const axGetAppUserByEmail = async (
 };
 
 export const axGetWebUserByEmail = async (email: string) => {
-  const res = await http.get(`${ODK_OPTS.URL}/v1/users?q=${email}`, REQ_OPTS);
-  return res.data;
+  const res = await http.get(`${ODK_OPTS.URL}v1/users?`, REQ_OPTS);
+  let data = res.data;
+  if (email) {
+    data = data.filter((item: any) => item.email == email);
+  }
+  return data;
 };
 
 export const axGetllAppUser = async () => {
@@ -43,10 +48,10 @@ export const axGetllUser = async () => {
   return res.data;
 };
 
-export const axCreateWebUser = async (email: string) => {
+export const axCreateWebUser = async (payload: OdkUserInterface) => {
   const res = await http.post(
-    `${ODK_OPTS.URL}v1/v1/users`,
-    { email, password: ODK_USER_CREDENTIALS.PASSWORD },
+    `${ODK_OPTS.URL}v1/users`,
+    { email: payload.email, password: ODK_USER_CREDENTIALS.PASSWORD },
     REQ_OPTS
   );
 

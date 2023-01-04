@@ -1,8 +1,7 @@
-import jwt from "jsonwebtoken";
+import JWTDecode from "jwt-decode";
 
-const salt: any = process.env.JWT_SALT || "";
 const getVerifiedUser = (token: string) => {
-  const decodedToken = jwt.verify(token, salt);
+  const decodedToken: any = JWTDecode(token);
   return decodedToken;
 };
 

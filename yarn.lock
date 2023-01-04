@@ -161,11 +161,6 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lukeed/ms@^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/@lukeed/ms/-/ms-2.0.1.tgz"
-  integrity sha512-Xs/4RZltsAL7pkvaNStUQt7netTkyxrS0K+RILcVr3TRMS/ToOg4I6uNfhB9SlGsnWBym4U+EaXq0f0cEMNkHA==
-
 "@nestjs/common@8.4.4":
   version "8.4.4"
   resolved "https://registry.npmjs.org/@nestjs/common/-/common-8.4.4.tgz"
@@ -588,16 +583,6 @@ array-union@^2.1.0:
   resolved "https://registry.npmjs.org/array-union/-/array-union-2.1.0.tgz"
   integrity sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==
 
-asn1.js@^5.3.0:
-  version "5.4.1"
-  resolved "https://registry.npmjs.org/asn1.js/-/asn1.js-5.4.1.tgz"
-  integrity sha512-+I//4cYPccV8LdmBLiX8CYvf9Sp3vQsrqu2QNXRcrbiWvcx/UdlFiqUJJzxRQxgsZmvhXhn4cSKeSmoFjVdupA==
-  dependencies:
-    bn.js "^4.0.0"
-    inherits "^2.0.1"
-    minimalistic-assert "^1.0.0"
-    safer-buffer "^2.1.0"
-
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz"
@@ -655,11 +640,6 @@ bl@^4.1.0:
     buffer "^5.5.0"
     inherits "^2.0.4"
     readable-stream "^3.4.0"
-
-bn.js@^4.0.0:
-  version "4.12.0"
-  resolved "https://registry.npmjs.org/bn.js/-/bn.js-4.12.0.tgz"
-  integrity sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==
 
 body-parser@1.20.1:
   version "1.20.1"
@@ -1058,7 +1038,7 @@ easy-table@1.1.0:
   optionalDependencies:
     wcwidth ">=1.0.1"
 
-ecdsa-sig-formatter@1.0.11, ecdsa-sig-formatter@^1.0.11:
+ecdsa-sig-formatter@1.0.11:
   version "1.0.11"
   resolved "https://registry.npmjs.org/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.11.tgz"
   integrity sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==
@@ -1341,15 +1321,6 @@ fast-json-stringify@^5.0.0:
     fast-uri "^2.1.0"
     rfdc "^1.2.0"
 
-fast-jwt@^1.4.0:
-  version "1.7.2"
-  resolved "https://registry.npmjs.org/fast-jwt/-/fast-jwt-1.7.2.tgz"
-  integrity sha512-OEInypGXJhtURzq9GbFM5KaALUu9+4IV3kJEbWPuqOBN5JBe7A51Tx0CaQYHGC9GNfZnr5npA0lCIMaWiZmz/A==
-  dependencies:
-    asn1.js "^5.3.0"
-    ecdsa-sig-formatter "^1.0.11"
-    mnemonist "^0.39.0"
-
 fast-levenshtein@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz"
@@ -1377,13 +1348,6 @@ fast-uri@^2.0.0, fast-uri@^2.1.0:
   resolved "https://registry.npmjs.org/fast-uri/-/fast-uri-2.1.0.tgz"
   integrity sha512-qKRta6N7BWEFVlyonVY/V+BMLgFqktCUV0QjT259ekAIlbVrMaFnFLxJ4s/JPl4tou56S1BzPufI60bLe29fHA==
 
-fastfall@^1.5.0:
-  version "1.5.1"
-  resolved "https://registry.npmjs.org/fastfall/-/fastfall-1.5.1.tgz"
-  integrity sha512-KH6p+Z8AKPXnmA7+Iz2Lh8ARCMr+8WNPVludm1LGkZoD2MjY6LVnRMtTKhkdzI+jr0RzQWXKzKyBJm1zoHEL4Q==
-  dependencies:
-    reusify "^1.0.0"
-
 fastify-cli@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npmjs.org/fastify-cli/-/fastify-cli-5.1.0.tgz"
@@ -1404,25 +1368,6 @@ fastify-cli@^5.1.0:
     resolve-from "^5.0.0"
     semver "^7.3.5"
     yargs-parser "^21.1.1"
-
-"fastify-jwt-deprecated@npm:fastify-jwt@4.1.3":
-  version "4.1.3"
-  resolved "https://registry.npmjs.org/fastify-jwt/-/fastify-jwt-4.1.3.tgz"
-  integrity sha512-SmcXjwgO6x8Kw4ybiZHOhk2Sp5MCvA/qWI3aXZPXrICWi1z6bQBSXJw8PiyiiGt84w/YcikpgntkWZiEP04EEg==
-  dependencies:
-    "@lukeed/ms" "^2.0.0"
-    fast-jwt "^1.4.0"
-    fastify-plugin "^3.0.0"
-    http-errors "^2.0.0"
-    steed "^1.1.3"
-
-fastify-jwt@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.npmjs.org/fastify-jwt/-/fastify-jwt-4.2.0.tgz"
-  integrity sha512-wS0Wvg+5/7ZGaOJVFFIIWoMyc1Ashq9zUuVzq757R36fvXtsrEnEAaEIVFImAsDrAUIr9+PnrthMSGdVZgDk/g==
-  dependencies:
-    fastify-jwt-deprecated "npm:fastify-jwt@4.1.3"
-    process-warning "^1.0.0"
 
 fastify-plugin@^3.0.0:
   version "3.0.1"
@@ -1531,15 +1476,7 @@ fastify@^4.10.2:
     semver "^7.3.7"
     tiny-lru "^10.0.0"
 
-fastparallel@^2.2.0:
-  version "2.4.1"
-  resolved "https://registry.npmjs.org/fastparallel/-/fastparallel-2.4.1.tgz"
-  integrity sha512-qUmhxPgNHmvRjZKBFUNI0oZuuH9OlSIOXmJ98lhKPxMZZ7zS/Fi0wRHOihDSz0R1YiIOjxzOY4bq65YTcdBi2Q==
-  dependencies:
-    reusify "^1.0.4"
-    xtend "^4.0.2"
-
-fastq@^1.3.0, fastq@^1.6.0:
+fastq@^1.6.0:
   version "1.14.0"
   resolved "https://registry.npmjs.org/fastq/-/fastq-1.14.0.tgz"
   integrity sha512-eR2D+V9/ExcbF9ls441yIuN6TI2ED1Y2ZcA5BmMtJsOkWOFRJQ0Jt0g1UwqXJJVAb+V+umH5Dfr8oh4EVP7VVg==
@@ -1552,14 +1489,6 @@ fastq@^1.6.1:
   integrity sha512-YpkpUnK8od0o1hmeSc7UUs/eB/vIPWJYjKck2QKIzAf71Vm1AAQ3EbuZB3g2JIy+pg+ERD0vqI79KyZiB2e2Nw==
   dependencies:
     reusify "^1.0.4"
-
-fastseries@^1.7.0:
-  version "1.7.2"
-  resolved "https://registry.npmjs.org/fastseries/-/fastseries-1.7.2.tgz"
-  integrity sha512-dTPFrPGS8SNSzAt7u/CbMKCJ3s01N04s4JFbORHcmyvVfVKmbhMD1VtRbh5enGHxkaQDqWyLefiKOGGmohGDDQ==
-  dependencies:
-    reusify "^1.0.0"
-    xtend "^4.0.0"
 
 figures@^3.0.0:
   version "3.2.0"
@@ -1888,7 +1817,7 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-inherits@2, inherits@2.0.4, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4:
+inherits@2, inherits@2.0.4, inherits@^2.0.3, inherits@^2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
@@ -2081,6 +2010,11 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
+jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
+
 levn@^0.4.1:
   version "0.4.1"
   resolved "https://registry.npmjs.org/levn/-/levn-0.4.1.tgz"
@@ -2256,11 +2190,6 @@ mimic-fn@^2.1.0:
   resolved "https://registry.npmjs.org/mimic-fn/-/mimic-fn-2.1.0.tgz"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-minimalistic-assert@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz"
-  integrity sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==
-
 minimatch@^3.0.4, minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   version "3.1.2"
   resolved "https://registry.npmjs.org/minimatch/-/minimatch-3.1.2.tgz"
@@ -2284,13 +2213,6 @@ mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
-
-mnemonist@^0.39.0:
-  version "0.39.5"
-  resolved "https://registry.npmjs.org/mnemonist/-/mnemonist-0.39.5.tgz"
-  integrity sha512-FPUtkhtJ0efmEFGpU14x7jGbTB+s18LrzRL2KgoWz9YvcY3cPomz8tih01GbHwnGk/OmkOKfqd/RAQoc8Lm7DQ==
-  dependencies:
-    obliterator "^2.0.1"
 
 ms@2.0.0:
   version "2.0.0"
@@ -2356,11 +2278,6 @@ object-inspect@^1.9.0:
   version "1.12.2"
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.12.2.tgz#c0641f26394532f28ab8d796ab954e43c009a8ea"
   integrity sha512-z+cPxW0QGUp0mcqcsgQyLVRDoXFQbXOwBaqyF7VIgI4TWNQsDHrBpUQslRmIfAoYWdYzs6UlKJtB2XJpTaNSpQ==
-
-obliterator@^2.0.1:
-  version "2.0.4"
-  resolved "https://registry.npmjs.org/obliterator/-/obliterator-2.0.4.tgz"
-  integrity sha512-lgHwxlxV1qIg1Eap7LgIeoBWIMFibOjbrYPIPJZcI1mmGAI2m3lNYpK12Y+GBdPQ0U1hRwSord7GIaawz962qQ==
 
 on-exit-leak-free@^2.1.0:
   version "2.1.0"
@@ -2795,7 +2712,7 @@ ret@~0.2.0:
   resolved "https://registry.npmjs.org/ret/-/ret-0.2.2.tgz"
   integrity sha512-M0b3YWQs7R3Z917WRQy1HHA7Ba7D8hvZg6UE5mLykJxQVE2ju0IXbGlaHPPlkY+WN7wFP+wUMXmBFA0aV6vYGQ==
 
-reusify@^1.0.0, reusify@^1.0.4:
+reusify@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/reusify/-/reusify-1.0.4.tgz"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
@@ -2869,7 +2786,7 @@ safe-stable-stringify@^2.3.1:
   resolved "https://registry.npmjs.org/safe-stable-stringify/-/safe-stable-stringify-2.3.1.tgz"
   integrity sha512-kYBSfT+troD9cDA85VDnHZ1rpHC50O0g1e6WlGHVCz/g+JS+9WKLj+XwFYyR8UbrZN8ll9HUpDAAddY58MGisg==
 
-"safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.1.0:
+"safer-buffer@>= 2.1.2 < 3":
   version "2.1.2"
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
@@ -3048,17 +2965,6 @@ statuses@2.0.1:
   version "1.5.0"
   resolved "https://registry.npmjs.org/statuses/-/statuses-1.5.0.tgz"
   integrity sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==
-
-steed@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/steed/-/steed-1.1.3.tgz"
-  integrity sha512-EUkci0FAUiE4IvGTSKcDJIQ/eRUP2JJb56+fvZ4sdnguLTqIdKjSxUe138poW8mkvKWXW2sFPrgTsxqoISnmoA==
-  dependencies:
-    fastfall "^1.5.0"
-    fastparallel "^2.2.0"
-    fastq "^1.3.0"
-    fastseries "^1.7.0"
-    reusify "^1.0.0"
 
 string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.3"
@@ -3389,7 +3295,7 @@ wrappy@1:
   resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-xtend@^4.0.0, xtend@^4.0.2:
+xtend@^4.0.0:
   version "4.0.2"
   resolved "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==

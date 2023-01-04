@@ -14,22 +14,21 @@ export function getAllOdkUserMappings() {
 export const getOdkWebUserMappingsBySuserId = async (userId: number) => {
   const data = await prisma.suserOdkMapping.findMany({
     where: {
-      s_user_id: userId,
+      s_user_id: BigInt(userId),
       project_id: null
     }
   });
-
-  return data[0];
+  return data;
 };
 
 export const getOdkAppUserMappingsBySuserId = async (appUserId: number, projectId: number) => {
   const data = await prisma.suserOdkMapping.findMany({
     where: {
-      app_user_id: appUserId,
-      project_id: projectId
+      app_user_id: BigInt(appUserId),
+      project_id: BigInt(projectId)
     }
   });
-  return data[0];
+  return data;
 };
 
 export const deleteOdkAppUserMappings = async (odkMappingId: number) => {
