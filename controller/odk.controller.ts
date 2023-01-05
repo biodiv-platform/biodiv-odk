@@ -119,7 +119,13 @@ export const deleteOdkAppUser = async (userName: string, projectId: string) => {
     const isDeleted = await axRemoveAppUser(user.id, projectId);
 
     if (isDeleted) {
-      return await deleteOdkAppUserMappings(Number(appUserOdkMapping[0].id));
+      const data = await deleteOdkAppUserMappings(Number(appUserOdkMapping[0].id));
+
+      if (data) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { token, ...responsePayload } = user;
+        return { ...responsePayload };
+      }
     } else {
       throw new Error("Unbale to delete web users");
     }
