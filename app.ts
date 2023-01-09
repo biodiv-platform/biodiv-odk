@@ -16,7 +16,7 @@ async function run() {
   }) as FastifyInstance;
   void app.register(createServer);
 
-  await app.listen({ port: 3000 }, (err) => {
+  await app.listen({ port: 3003 }, (err) => {
     if (err) {
       console.error(err)
       process.exit(1)

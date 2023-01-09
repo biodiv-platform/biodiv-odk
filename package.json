@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsnd --respawn --transpile-only --exit-child ./app.ts",
     "build": "tsc -p ./tsconfig.json",
-    "start": "node -r dotenv/config build/index.js dotenv_config_path=.env",
+    "start": "node  dist/app.js ",
     "lint": "eslint . && prettier --write ./**/*",
     "lint:fix": "eslint . --fix"
   },
@@ -32,7 +32,7 @@
     "fastify": "^4.10.2",
     "fastify-cli": "^5.1.0",
     "jwt-decode": "^3.1.2",
-    "fastify-plugin": "^4.0.0",
+    "fastify-plugin": "^4.4.0",
     "fastify-swagger": "^5.2.0",
     "fastify-zod": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
