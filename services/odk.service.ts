@@ -42,6 +42,11 @@ export const axGetllAppUser = async () => {
   return res.data;
 };
 
+export const axGetAllProjects = async () => {
+  const res = await http.get(`${ODK_OPTS.URL}v1/projects`, REQ_OPTS);
+  return res.data;
+};
+
 export const axGetllUser = async () => {
   const res = await http.get(`${ODK_OPTS.URL}v1/users`, REQ_OPTS);
 

@@ -2,6 +2,7 @@ import { UserOdkMappingInterface } from "../schema/suser-odk-mapping.schema";
 import {
   axCreateAppUser,
   axCreateWebUser,
+  axGetAllProjects,
   axGetAppUserByEmail,
   axGetllAppUser,
   axGetllUser,
@@ -13,6 +14,7 @@ import {
   createOdkUserMapping,
   deleteOdkAppUserMappings,
   deleteOdkWebUserMappings,
+  getAllAppUserBySuserId,
   getOdkAppUserMappingsBySuserId,
   getOdkWebUserMappingsBySuserId
 } from "../services/suser-odk-mapping.service";
@@ -25,6 +27,14 @@ export interface OdkUserInterface {
   projectId?: string;
 }
 
+export interface OdkProjectInterface {
+  id: number;
+  name: string;
+  description: string;
+  keyId: number;
+  archived: boolean;
+}
+
 // TODO:need to add global error handling
 // TODO:complete the mirgation to use prisma client
 // https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/introspection-typescript-postgres
@@ -34,6 +44,7 @@ export const createOdkUser = async (createOdkUser: OdkUserInterface) => {
   const { email, projectId, sUserId } = createOdkUser;
   if (projectId) {
     let user = await axGetAppUserByEmail(email, Number(projectId), false);
+    // check with mapping table as well if suserID has has the project mapped
     if (user?.token) {
       throw new Error(`User already present for ${email} and projectId ${projectId}`);
     }
@@ -142,6 +153,32 @@ export const getAppUserQrCodeByProjectId = async (
   try {
     const appUser = await axGetAppUserByEmail(email, projectId, true, xmlFormId);
     return getQRSVG(appUser);
+  } catch (error) {
+    throw new Error("Unbale to delete app users");
+  }
+};
+
+export const getAllProjects = async () => {
+  try {
+    const projects = await axGetAllProjects();
+    return projects;
+  } catch (error) {
+    throw new Error("Unbale to delete app users");
+  }
+};
+
+export const getProjectListByAppUser = async (suserId: string) => {
+  try {
+    const odkUserMapping = await getAllAppUserBySuserId(Number(suserId));
+    const projectList: OdkProjectInterface[] = await axGetAllProjects();
+    if (odkUserMapping?.length && projectList?.length) {
+      const results = projectList.filter((project: OdkProjectInterface) =>
+        odkUserMapping.some((item) => Number(item.project_id) == project.id)
+      );
+      return results;
+    } else {
+      throw new Error(`Project not found for the given user id ${suserId}`);
+    }
   } catch (error) {
     throw new Error("Unbale to delete app users");
   }

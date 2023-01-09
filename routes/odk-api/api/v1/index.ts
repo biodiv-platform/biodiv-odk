@@ -6,6 +6,8 @@ import {
   deleteOdkAppUser,
   deleteOdkWebUser,
   getAllOdkUser,
+  getAllProjects,
+  getProjectListByAppUser,
   OdkUserInterface
 } from "../../../../controller/odk.controller";
 import { axGetAppUserByEmail } from "../../../../services/odk.service";
@@ -17,6 +19,28 @@ export default async function (fastify: FastifyInstance) {
     try {
       const user = await getAllOdkUser();
       reply.code(200).send(user);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.get("/app-user/projects/:sUserId", async function (request, reply) {
+    try {
+      const {sUserId}: any = request.params;
+
+      const projectList = await getProjectListByAppUser(sUserId);
+      reply.code(200).send(projectList);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.get("/all/projects", async function (request, reply) {
+    try {
+      const projects = await getAllProjects();
+      reply.code(200).send(projects);
     } catch (e) {
       console.error("My error code is", e);
       reply.code(500).send({ success: false });
