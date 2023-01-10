@@ -8,7 +8,8 @@ import {
   axGetllUser,
   axGetWebUserByEmail,
   axRemoveAppUser,
-  axRemoveWebUser
+  axRemoveWebUser,
+  axUpdateWebUserDisplayName
 } from "../services/odk.service";
 import {
   createOdkUserMapping,
@@ -41,15 +42,15 @@ export interface OdkProjectInterface {
 // TODO:SONAR cloud
 
 export const createOdkUser = async (createOdkUser: OdkUserInterface) => {
-  const { email, projectId, sUserId } = createOdkUser;
+  const { email, projectId, sUserId, username } = createOdkUser;
   if (projectId) {
-    let user = await axGetAppUserByEmail(email, Number(projectId), false);
+    let user = await axGetAppUserByEmail(`${username}-${sUserId}`, Number(projectId), false);
     // check with mapping table as well if suserID has has the project mapped
     if (user?.token) {
       throw new Error(`User already present for ${email} and projectId ${projectId}`);
     }
 
-    user = await axCreateAppUser(email, Number(projectId));
+    user = await axCreateAppUser(`${username}-${sUserId}`, Number(projectId));
 
     if (user) {
       const payload: UserOdkMappingInterface = {
@@ -61,13 +62,14 @@ export const createOdkUser = async (createOdkUser: OdkUserInterface) => {
       if (mapping) return user;
     }
   } else {
-    let user = await axGetWebUserByEmail(email);
+    let user = await axGetWebUserByEmail(`${username}-${sUserId}`);
 
     if (user && user.length > 0) {
       throw new Error(`User already present for username ${email}`);
     }
 
     user = await axCreateWebUser(createOdkUser);
+    user = await axUpdateWebUserDisplayName(user.id, createOdkUser);
 
     if (user) {
       const payload = {
@@ -98,9 +100,9 @@ export const getAllOdkUser = async () => {
   }
 };
 
-export const deleteOdkWebUser = async (sUserId: number, email: string) => {
+export const deleteOdkWebUser = async (sUserId: number, userName: string) => {
   try {
-    const user = await axGetWebUserByEmail(email);
+    const user = await axGetWebUserByEmail(userName);
 
     const userOdkMapping = await getOdkWebUserMappingsBySuserId(sUserId);
     if (user?.length <= 0 && userOdkMapping.length <= 0) {

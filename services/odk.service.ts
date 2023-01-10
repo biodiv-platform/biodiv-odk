@@ -27,11 +27,11 @@ export const axGetAppUserByEmail = async (
   return { ...appUser, projectName };
 };
 
-export const axGetWebUserByEmail = async (email: string) => {
+export const axGetWebUserByEmail = async (userName: string) => {
   const res = await http.get(`${ODK_OPTS.URL}v1/users?`, REQ_OPTS);
   let data = res.data;
-  if (email) {
-    data = data.filter((item: any) => item.email == email);
+  if (userName) {
+    data = data.filter((item: any) => item.displayName == userName);
   }
   return data;
 };
@@ -57,6 +57,18 @@ export const axCreateWebUser = async (payload: OdkUserInterface) => {
   const res = await http.post(
     `${ODK_OPTS.URL}v1/users`,
     { email: payload.email, password: ODK_USER_CREDENTIALS.PASSWORD },
+    REQ_OPTS
+  );
+
+  return res.data;
+};
+
+
+export const axUpdateWebUserDisplayName = async (webUserId:string,payload: OdkUserInterface) => {
+  const {sUserId,username} = payload
+  const res = await http.patch(
+    `${ODK_OPTS.URL}v1/users/${webUserId}`,
+    { email: payload.email, displayName:`${username}-${sUserId}` },
     REQ_OPTS
   );
 

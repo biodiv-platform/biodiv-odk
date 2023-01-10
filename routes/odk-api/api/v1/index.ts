@@ -99,7 +99,7 @@ export default async function (fastify: FastifyInstance) {
     }
   });
 
-  fastify.delete("/remove/web-user/:suserId/:email", async function (request, reply) {
+  fastify.delete("/remove/web-user/:suserId/:userName", async function (request, reply) {
     const { authorization } = request.headers;
     if (!authorization) reply.code(500).send({ success: false });
     const token = authorization?.split(" ")[1] || "";
@@ -109,9 +109,9 @@ export default async function (fastify: FastifyInstance) {
     if (!roles.includes("ROLE_ADMIN")) reply.code(500).send({ success: false });
 
     try {
-      const { suserId, email }: any = request.params;
+      const { suserId, userName }: any = request.params;
 
-      const user = await deleteOdkWebUser(suserId, email);
+      const user = await deleteOdkWebUser(suserId, userName);
       reply.code(200).send(user);
     } catch (e) {
       console.error("My error code is", e);
