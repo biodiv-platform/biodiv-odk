@@ -7,6 +7,7 @@ import {
   deleteOdkWebUser,
   getAllOdkUser,
   getAllProjects,
+  getIsWebUer,
   getProjectListByAppUser,
   OdkUserInterface
 } from "../../../../controller/odk.controller";
@@ -15,7 +16,7 @@ import getVerifiedUser from "../../../../utils/jwt";
 import getQRSVG from "../../../../utils/qrcode";
 
 export default async function (fastify: FastifyInstance) {
-  fastify.get("/all", async function (request, reply) {
+  fastify.get("/user/all", async function (request, reply) {
     try {
       const user = await getAllOdkUser();
       reply.code(200).send(user);
@@ -30,6 +31,18 @@ export default async function (fastify: FastifyInstance) {
       const {sUserId}: any = request.params;
 
       const projectList = await getProjectListByAppUser(sUserId);
+      reply.code(200).send(projectList);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.get("/is-web-user/:sUserId", async function (request, reply) {
+    try {
+      const {sUserId}: any = request.params;
+
+      const projectList = await getIsWebUer(sUserId);
       reply.code(200).send(projectList);
     } catch (e) {
       console.error("My error code is", e);

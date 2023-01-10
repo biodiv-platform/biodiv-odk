@@ -81,6 +81,12 @@ export const createOdkUser = async (createOdkUser: OdkUserInterface) => {
   }
 };
 
+export const getIsWebUer = async (sUserId: string) => {
+  const userOdkMapping = await getOdkWebUserMappingsBySuserId(Number(sUserId));
+
+  return userOdkMapping?.length > 0 ? true : false;
+};
+
 export const getAllOdkUser = async () => {
   try {
     const appUser: OdkUserInterface[] = await axGetllAppUser();
