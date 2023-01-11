@@ -28,7 +28,7 @@ export default async function (fastify: FastifyInstance) {
 
   fastify.get("/app-user/projects/:sUserId", async function (request, reply) {
     try {
-      const {sUserId}: any = request.params;
+      const { sUserId }: any = request.params;
 
       const projectList = await getProjectListByAppUser(sUserId);
       reply.code(200).send(projectList);
@@ -40,7 +40,7 @@ export default async function (fastify: FastifyInstance) {
 
   fastify.get("/is-web-user/:sUserId", async function (request, reply) {
     try {
-      const {sUserId}: any = request.params;
+      const { sUserId }: any = request.params;
 
       const projectList = await getIsWebUer(sUserId);
       reply.code(200).send(projectList);
@@ -89,6 +89,22 @@ export default async function (fastify: FastifyInstance) {
     try {
       if (user.email && xmlFormId) {
         const appUser = await axGetAppUserByEmail(user.email, projectId, true, xmlFormId);
+
+        reply.header("Content-Type", "image/svg+xml");
+        reply.send(getQRSVG(appUser));
+      }
+    } catch (e) {
+      console.error(e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.get("/app-user/qr-code/:userName/:projectId", async function (request: any, reply) {
+    const { userName, projectId }: any = request.params;
+
+    try {
+      if (userName && projectId) {
+        const appUser = await axGetAppUserByEmail(userName, projectId, false);
 
         reply.header("Content-Type", "image/svg+xml");
         reply.send(getQRSVG(appUser));
