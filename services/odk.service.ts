@@ -68,7 +68,7 @@ export const axUpdateWebUserDisplayName = async (webUserId:string,payload: OdkUs
   const {sUserId,username} = payload
   const res = await http.patch(
     `${ODK_OPTS.URL}v1/users/${webUserId}`,
-    { email: payload.email, displayName:`${username}-${sUserId}` },
+    { email: payload.email, displayName:`${username}-suser${sUserId}` },
     REQ_OPTS
   );
 
