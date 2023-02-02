@@ -56,7 +56,7 @@ export const axGetllUser = async () => {
 export const axCreateWebUser = async (payload: OdkUserInterface) => {
   const res = await http.post(
     `${ODK_OPTS.URL}v1/users`,
-    { email: payload.email, password: ODK_USER_CREDENTIALS.PASSWORD },
+    { email: payload.email, password: payload.password },
     REQ_OPTS
   );
 

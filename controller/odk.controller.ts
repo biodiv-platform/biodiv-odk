@@ -26,6 +26,7 @@ export interface OdkUserInterface {
   email: string;
   username: string;
   projectId?: string;
+  password: string;
 }
 
 export interface OdkProjectInterface {
