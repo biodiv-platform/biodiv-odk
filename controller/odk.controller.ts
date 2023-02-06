@@ -45,13 +45,13 @@ export interface OdkProjectInterface {
 export const createOdkUser = async (createOdkUser: OdkUserInterface) => {
   const { email, projectId, sUserId, username } = createOdkUser;
   if (projectId) {
-    let user = await axGetAppUserByEmail(`${username}-${sUserId}`, Number(projectId), false);
+    let user = await axGetAppUserByEmail(`${username}-suser${sUserId}`, Number(projectId), false);
     // check with mapping table as well if suserID has has the project mapped
     if (user?.token) {
       throw new Error(`User already present for ${email} and projectId ${projectId}`);
     }
 
-    user = await axCreateAppUser(`${username}-${sUserId}`, Number(projectId));
+    user = await axCreateAppUser(`${username}-suser${sUserId}`, Number(projectId));
 
     if (user) {
       const payload: UserOdkMappingInterface = {
@@ -63,7 +63,7 @@ export const createOdkUser = async (createOdkUser: OdkUserInterface) => {
       if (mapping) return user;
     }
   } else {
-    let user = await axGetWebUserByEmail(`${username}-${sUserId}`);
+    let user = await axGetWebUserByEmail(`${username}-suser${sUserId}`);
 
     if (user && user.length > 0) {
       throw new Error(`User already present for username ${email}`);
