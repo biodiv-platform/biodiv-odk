@@ -1,10 +1,10 @@
 // @ts-check
 import { OdkUserInterface } from "../controller/odk.controller";
-import { ODK_OPTS, ODK_USER_CREDENTIALS, REQ_OPTS } from "../static/constants";
+import { ODK_OPTS, REQ_OPTS } from "../static/constants";
 import http from "../utils/http";
 
 export const axGetAppUserByEmail = async (
-  email: string,
+  userName: string,
   projectId: number,
   canCreate: boolean,
   xmlFormId?: number
@@ -12,14 +12,18 @@ export const axGetAppUserByEmail = async (
   const res = await http.get(`${ODK_OPTS.URL}v1/projects/${projectId}/app-users`, REQ_OPTS);
 
   // Creates app user if not exist
-  let appUser = res.data.find((au: any) => au.token && au.displayName === email);
+  let appUser = res.data.find((au: any) => au.token && au.displayName === userName);
   if (!appUser && canCreate) {
-    appUser = await axCreateAppUser(email, projectId);
+    appUser = await axCreateAppUser(userName, projectId);
   }
 
   if (canCreate && xmlFormId) {
     // Add permission if not exist
     await axAssignUserToForm(projectId, xmlFormId, appUser.id);
+  }
+
+  if (!appUser && !canCreate) {
+    throw new Error("Unauthorised");
   }
 
   const projectName = await axGetProjectName(projectId);
@@ -63,12 +67,11 @@ export const axCreateWebUser = async (payload: OdkUserInterface) => {
   return res.data;
 };
 
-
-export const axUpdateWebUserDisplayName = async (webUserId:string,payload: OdkUserInterface) => {
-  const {sUserId,username} = payload
+export const axUpdateWebUserDisplayName = async (webUserId: string, payload: OdkUserInterface) => {
+  const { sUserId, username } = payload;
   const res = await http.patch(
     `${ODK_OPTS.URL}v1/users/${webUserId}`,
-    { email: payload.email, displayName:`${username}-suser${sUserId}` },
+    { email: payload.email, displayName: `${username}-suser${sUserId}` },
     REQ_OPTS
   );
 

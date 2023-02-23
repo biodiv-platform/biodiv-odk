@@ -26,6 +26,7 @@ module.exports = {
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
+    "@typescript-eslint/no-var-requires": "off",
 
     "no-console": ["error", { allow: ["warn", "error", "debug"] }]
   }

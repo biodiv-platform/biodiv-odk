@@ -96,8 +96,8 @@ export const getAllOdkUser = async () => {
     const webUser = await axGetllUser();
     return [...webUser, ...appUser];
   } catch (error) {
-    console.error("Unble to get all user", error);
-    throw new Error("Unbale to get all users");
+    console.error("Unable to get all user", error);
+    throw new Error("Unable to get all users");
   }
 };
 
@@ -119,10 +119,10 @@ export const deleteOdkWebUser = async (sUserId: number, userName: string) => {
         return { ...responsePayload };
       }
     } else {
-      throw new Error("Unbale to delete web users");
+      throw new Error("Unable to delete web users");
     }
   } catch (error) {
-    throw new Error(`Unbale to delete web users`);
+    throw new Error(`Unable to delete web users`);
   }
 };
 
@@ -147,10 +147,10 @@ export const deleteOdkAppUser = async (userName: string, projectId: string) => {
         return { ...responsePayload };
       }
     } else {
-      throw new Error("Unbale to delete web users");
+      throw new Error("Unable to delete app users");
     }
   } catch (error) {
-    throw new Error("Unbale to delete app users");
+    throw new Error("Unable to delete app users");
   }
 };
 
@@ -163,7 +163,7 @@ export const getAppUserQrCodeByProjectId = async (
     const appUser = await axGetAppUserByEmail(email, projectId, true, xmlFormId);
     return getQRSVG(appUser);
   } catch (error) {
-    throw new Error("Unbale to delete app users");
+    throw new Error("Unable to get app users qr code");
   }
 };
 
@@ -172,7 +172,7 @@ export const getAllProjects = async () => {
     const projects = await axGetAllProjects();
     return projects;
   } catch (error) {
-    throw new Error("Unbale to delete app users");
+    throw new Error("Unable to get all projects");
   }
 };
 
@@ -189,6 +189,6 @@ export const getProjectListByAppUser = async (suserId: string) => {
       throw new Error(`Project not found for the given user id ${suserId}`);
     }
   } catch (error) {
-    throw new Error("Unbale to delete app users");
+    throw new Error(`Project not found for the given user id ${suserId}`);
   }
 };

@@ -21,16 +21,15 @@ export const getOdkWebUserMappingsBySuserId = async (userId: number) => {
   return data;
 };
 
-export const getAllAppUserBySuserId = async (userId:number)=>{
+export const getAllAppUserBySuserId = async (userId: number) => {
   const data = await prisma.suserOdkMapping.findMany({
     where: {
       s_user_id: BigInt(userId),
-      NOT: [{  project_id: null }]
-     
+      NOT: [{ project_id: null }]
     }
   });
   return data;
-}
+};
 
 export const getOdkAppUserMappingsBySuserId = async (appUserId: number, projectId: number) => {
   const data = await prisma.suserOdkMapping.findMany({
