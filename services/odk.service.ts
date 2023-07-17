@@ -22,10 +22,6 @@ export const axGetAppUserByEmail = async (
     await axAssignUserToForm(projectId, xmlFormId, appUser.id);
   }
 
-  if (!appUser && !canCreate) {
-    throw new Error("Unauthorised");
-  }
-
   const projectName = await axGetProjectName(projectId);
 
   return { ...appUser, projectName };
