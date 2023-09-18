@@ -3,14 +3,14 @@ import {
   axCreateAppUser,
   axCreateWebUser,
   axGetAllProjects,
+  axGetAllSubmissionsByForm,
   axGetAppUserByEmail,
   axGetllAppUser,
   axGetllUser,
   axGetWebUserByEmail,
   axRemoveAppUser,
   axRemoveWebUser,
-  axUpdateWebUserDisplayName
-} from "../services/odk.service";
+  axUpdateWebUserDisplayName} from "../services/odk.service";
 import {
   createOdkUserMapping,
   deleteOdkAppUserMappings,
@@ -190,5 +190,18 @@ export const getProjectListByAppUser = async (suserId: string) => {
     }
   } catch (error) {
     throw new Error(`Project not found for the given user id ${suserId}`);
+  }
+};
+
+export const getAllSubmissionByForm = async (
+  projectId: string,
+  formName: string,
+  isDraft?: boolean
+) => {
+  try {
+    const submissions = await axGetAllSubmissionsByForm(Number(projectId), formName, isDraft);
+    return submissions;
+  } catch (error) {
+    throw new Error("Unable to get all projects");
   }
 };

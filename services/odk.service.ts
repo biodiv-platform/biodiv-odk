@@ -120,3 +120,22 @@ export const axGetProjectName = async (projectId: number) => {
 
   return res.data.name;
 };
+
+export const axGetAllSubmissionsByForm = async (
+  projectId: number,
+  formName: string,
+  isDraft?: boolean
+) => {
+  console.warn(isDraft);
+
+  const res = isDraft
+    ? await http.get(
+        `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${formName}/draft.svc/Submissions`,
+        REQ_OPTS
+      )
+    : await http.get(
+        `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${formName}.svc/Submissions`,
+        REQ_OPTS
+      );
+  return res.data;
+};

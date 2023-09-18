@@ -7,6 +7,7 @@ import {
   deleteOdkWebUser,
   getAllOdkUser,
   getAllProjects,
+  getAllSubmissionByForm,
   getIsWebUer,
   getProjectListByAppUser,
   OdkUserInterface
@@ -148,6 +149,18 @@ export default async function (fastify: FastifyInstance) {
       const { userName, projetcId }: any = request.params;
       const user = await deleteOdkAppUser(userName, projetcId);
       reply.code(200).send(user);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.get("/projects/:projectId/forms/submissions/:formName", async function (request, reply) {
+    try {
+      const { projectId, formName }: any = request.params;
+      const { isDraft = false }: any = request.query;
+      const submissions = await getAllSubmissionByForm(projectId, formName, isDraft);
+      reply.code(200).send(submissions);
     } catch (e) {
       console.error("My error code is", e);
       reply.code(500).send({ success: false });
