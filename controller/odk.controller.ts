@@ -10,7 +10,8 @@ import {
   axGetWebUserByEmail,
   axRemoveAppUser,
   axRemoveWebUser,
-  axUpdateWebUserDisplayName} from "../services/odk.service";
+  axUpdateWebUserDisplayName
+} from "../services/odk.service";
 import {
   createOdkUserMapping,
   deleteOdkAppUserMappings,
@@ -196,12 +197,24 @@ export const getProjectListByAppUser = async (suserId: string) => {
 export const getAllSubmissionByForm = async (
   projectId: string,
   formName: string,
-  isDraft?: boolean
+  isDraft?: boolean,
+  gtDate?: string,
+  geDate?: string,
+  ltDate?: string,
+  leDate?: string
 ) => {
   try {
-    const submissions = await axGetAllSubmissionsByForm(Number(projectId), formName, isDraft);
+    const submissions = await axGetAllSubmissionsByForm(
+      Number(projectId),
+      formName,
+      isDraft,
+      gtDate,
+      geDate,
+      ltDate,
+      leDate
+    );
     return submissions;
   } catch (error) {
-    throw new Error("Unable to get all projects");
+    throw new Error("Unable to get Submissions");
   }
 };

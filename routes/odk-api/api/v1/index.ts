@@ -158,8 +158,17 @@ export default async function (fastify: FastifyInstance) {
   fastify.get("/projects/:projectId/forms/submissions/:formName", async function (request, reply) {
     try {
       const { projectId, formName }: any = request.params;
-      const { isDraft = false }: any = request.query;
-      const submissions = await getAllSubmissionByForm(projectId, formName, isDraft);
+      const { isDraft = false, gtDate, geDate, ltDate, leDate }: any = request.query;
+
+      const submissions = await getAllSubmissionByForm(
+        projectId,
+        formName,
+        isDraft,
+        gtDate,
+        geDate,
+        ltDate,
+        leDate
+      );
       reply.code(200).send(submissions);
     } catch (e) {
       console.error("My error code is", e);

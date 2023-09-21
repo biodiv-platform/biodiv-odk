@@ -124,9 +124,20 @@ export const axGetProjectName = async (projectId: number) => {
 export const axGetAllSubmissionsByForm = async (
   projectId: number,
   formName: string,
-  isDraft?: boolean
+  isDraft?: boolean,
+  gtDate?: string,
+  geDate?: string,
+  ltDate?: string,
+  leDate?: string
 ) => {
-  console.warn(isDraft);
+  const filters = [];
+
+  if (gtDate) filters.push(`__system/submissionDate gt ${gtDate}`);
+  if (geDate) filters.push(`__system/submissionDate ge ${geDate}`);
+  if (ltDate) filters.push(`__system/submissionDate lt ${ltDate}`);
+  if (leDate) filters.push(`__system/submissionDate le ${leDate}`);
+
+  const filterString = filters.join(" and ");
 
   const res = isDraft
     ? await http.get(
@@ -134,7 +145,7 @@ export const axGetAllSubmissionsByForm = async (
         REQ_OPTS
       )
     : await http.get(
-        `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${formName}.svc/Submissions`,
+        `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${formName}.svc/Submissions?&$filter=${filterString}`,
         REQ_OPTS
       );
   return res.data;
