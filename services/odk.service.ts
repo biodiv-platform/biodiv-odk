@@ -150,3 +150,16 @@ export const axGetAllSubmissionsByForm = async (
       );
   return res.data;
 };
+
+export const axGetAttachmentsByForm = async (
+  projectId: number,
+  xmlFormId: string,
+  instanceId?: string,
+  filename?: string
+) => {
+  const res = await http.get(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}/attachments/${filename}`,
+    REQ_OPTS
+  );
+  return res.data;
+};

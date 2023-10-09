@@ -5,6 +5,7 @@ import {
   axGetAllProjects,
   axGetAllSubmissionsByForm,
   axGetAppUserByEmail,
+  axGetAttachmentsByForm,
   axGetllAppUser,
   axGetllUser,
   axGetWebUserByEmail,
@@ -216,5 +217,24 @@ export const getAllSubmissionByForm = async (
     return submissions;
   } catch (error) {
     throw new Error("Unable to get Submissions");
+  }
+};
+
+export const getAttachements = async (
+  projectId: string,
+  xmlFormId: string,
+  instanceId: string,
+  filename: string
+) => {
+  try {
+    const submissions = await axGetAttachmentsByForm(
+      Number(projectId),
+      xmlFormId,
+      instanceId,
+      filename
+    );
+    return submissions;
+  } catch (error) {
+    throw new Error("Unable to get the attachment");
   }
 };

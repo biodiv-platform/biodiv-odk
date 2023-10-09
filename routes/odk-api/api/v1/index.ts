@@ -8,6 +8,7 @@ import {
   getAllOdkUser,
   getAllProjects,
   getAllSubmissionByForm,
+  getAttachements,
   getIsWebUer,
   getProjectListByAppUser,
   OdkUserInterface
@@ -175,4 +176,19 @@ export default async function (fastify: FastifyInstance) {
       reply.code(500).send({ success: false });
     }
   });
+
+  fastify.get(
+    "/projects/:projectId/forms/:xmlFormId/submissions/:instanceId/attachments/:filename",
+    async function (request, reply) {
+      try {
+        const { projectId, xmlFormId, instanceId, filename }: any = request.params;
+
+        const submissions = await getAttachements(projectId, xmlFormId, instanceId, filename);
+        reply.code(200).send(submissions);
+      } catch (e) {
+        console.error("My error code is", e);
+        reply.code(500).send({ success: false });
+      }
+    }
+  );
 }
