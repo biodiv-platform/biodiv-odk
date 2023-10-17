@@ -2,6 +2,7 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 
 import {
+  createEntityData,
   createOdkUser,
   deleteOdkAppUser,
   deleteOdkWebUser,
@@ -9,6 +10,7 @@ import {
   getAllProjects,
   getAllSubmissionByForm,
   getAttachements,
+  getEntitiesMetaData,
   getIsWebUer,
   getProjectListByAppUser,
   OdkUserInterface
@@ -191,4 +193,29 @@ export default async function (fastify: FastifyInstance) {
       }
     }
   );
+
+  fastify.get("/projects/:projectId/entityData/:name", async function (request, reply) {
+    try {
+      const { projectId, name }: any = request.params;
+
+      const entities = await getEntitiesMetaData(projectId, name);
+      reply.code(200).send(entities);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.post("/projects/:projectId/create/entityData/:name", async function (request, reply) {
+    try {
+      const { projectId, name }: any = request.params;
+      const payload = request.body;
+
+      const entities = await createEntityData(projectId, name, payload);
+      reply.code(200).send(entities);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
 }

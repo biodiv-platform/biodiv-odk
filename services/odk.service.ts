@@ -163,3 +163,21 @@ export const axGetAttachmentsByForm = async (
   );
   return res.data;
 };
+
+export const axGetEntitiesMetaData = async (projectId: number, name: string) => {
+  const res = await http.get(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/datasets/${name}.svc/entities`,
+    REQ_OPTS
+  );
+  return res.data;
+};
+
+export const axGetCreateEntityData = async (projectId: number, name: string, payload: any) => {
+  console.warn("payload", payload);
+  const res = await http.post(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/datasets/${name}/entities`,
+    payload,
+    REQ_OPTS
+  );
+  return res.data;
+};

@@ -6,6 +6,8 @@ import {
   axGetAllSubmissionsByForm,
   axGetAppUserByEmail,
   axGetAttachmentsByForm,
+  axGetCreateEntityData,
+  axGetEntitiesMetaData,
   axGetllAppUser,
   axGetllUser,
   axGetWebUserByEmail,
@@ -236,5 +238,23 @@ export const getAttachements = async (
     return submissions;
   } catch (error) {
     throw new Error("Unable to get the attachment");
+  }
+};
+
+export const getEntitiesMetaData = async (projectId: string, name: string) => {
+  try {
+    const entities = await axGetEntitiesMetaData(Number(projectId), name);
+    return entities;
+  } catch (error) {
+    throw new Error("Unable to get the entities");
+  }
+};
+
+export const createEntityData = async (projectId: string, name: string, payload: any) => {
+  try {
+    const entities = await axGetCreateEntityData(Number(projectId), name, payload);
+    return entities;
+  } catch (error) {
+    throw new Error(`${error} ,Unable to create the entities data`);
   }
 };
