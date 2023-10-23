@@ -13,7 +13,8 @@ import {
   getEntitiesMetaData,
   getIsWebUer,
   getProjectListByAppUser,
-  OdkUserInterface
+  OdkUserInterface,
+  patchSubmissionMetaData
 } from "../../../../controller/odk.controller";
 import { axGetAppUserByEmail } from "../../../../services/odk.service";
 import getVerifiedUser from "../../../../utils/jwt";
@@ -218,4 +219,20 @@ export default async function (fastify: FastifyInstance) {
       reply.code(500).send({ success: false });
     }
   });
+
+  fastify.patch(
+    "/projects/:projectId/forms/:xmlFormId/submissions/:instanceId",
+    async function (request, reply) {
+      try {
+        const { projectId, xmlFormId, instanceId }: any = request.params;
+        const payload = request.body;
+
+        const submission = await patchSubmissionMetaData(projectId, xmlFormId, instanceId, payload);
+        reply.code(200).send(submission);
+      } catch (e) {
+        console.error("My error code is", e);
+        reply.code(500).send({ success: false });
+      }
+    }
+  );
 }

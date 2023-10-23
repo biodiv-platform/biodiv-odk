@@ -173,9 +173,22 @@ export const axGetEntitiesMetaData = async (projectId: number, name: string) => 
 };
 
 export const axGetCreateEntityData = async (projectId: number, name: string, payload: any) => {
-  console.warn("payload", payload);
   const res = await http.post(
     `${ODK_OPTS.URL}v1/projects/${projectId}/datasets/${name}/entities`,
+    payload,
+    REQ_OPTS
+  );
+  return res.data;
+};
+
+export const axPatchSubmissionData = async (
+  projectId: number,
+  xmlFormId: string,
+  instanceId: string,
+  payload: any
+) => {
+  const res = await http.patch(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}`,
     payload,
     REQ_OPTS
   );

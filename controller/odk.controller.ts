@@ -11,6 +11,7 @@ import {
   axGetllAppUser,
   axGetllUser,
   axGetWebUserByEmail,
+  axPatchSubmissionData,
   axRemoveAppUser,
   axRemoveWebUser,
   axUpdateWebUserDisplayName
@@ -256,5 +257,24 @@ export const createEntityData = async (projectId: string, name: string, payload:
     return entities;
   } catch (error) {
     throw new Error(`${error} ,Unable to create the entities data`);
+  }
+};
+
+export const patchSubmissionMetaData = async (
+  projectId: string,
+  xmlFormId: string,
+  instanceId: string,
+  payload: any
+) => {
+  try {
+    const submission = await axPatchSubmissionData(
+      Number(projectId),
+      xmlFormId,
+      instanceId,
+      payload
+    );
+    return submission;
+  } catch (error) {
+    throw new Error(`${error} ,Unable to patch the submission data`);
   }
 };
