@@ -145,9 +145,12 @@ export const axGetAllSubmissionsByForm = async (
         REQ_OPTS
       )
     : await http.get(
-        `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${formName}.svc/Submissions?&$filter=${filterString}`,
+        `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${formName}.svc/Submissions${
+          filterString ? `?$filter=${filterString}` : ""
+        }`,
         REQ_OPTS
       );
+
   return res.data;
 };
 

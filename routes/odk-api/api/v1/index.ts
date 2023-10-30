@@ -159,7 +159,7 @@ export default async function (fastify: FastifyInstance) {
     }
   });
 
-  fastify.get("/projects/:projectId/forms/submissions/:formName", async function (request, reply) {
+  fastify.get("/projects/:projectId/forms/:formName/submissions", async function (request, reply) {
     try {
       const { projectId, formName }: any = request.params;
       const { isDraft = false, gtDate, geDate, ltDate, leDate }: any = request.query;
