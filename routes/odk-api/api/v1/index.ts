@@ -2,14 +2,19 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 
 import {
+  createEntityData,
   createOdkUser,
   deleteOdkAppUser,
   deleteOdkWebUser,
   getAllOdkUser,
   getAllProjects,
+  getAllSubmissionByForm,
+  getAttachements,
+  getEntitiesMetaData,
   getIsWebUer,
   getProjectListByAppUser,
-  OdkUserInterface
+  OdkUserInterface,
+  patchSubmissionMetaData
 } from "../../../../controller/odk.controller";
 import { axGetAppUserByEmail } from "../../../../services/odk.service";
 import getVerifiedUser from "../../../../utils/jwt";
@@ -153,4 +158,81 @@ export default async function (fastify: FastifyInstance) {
       reply.code(500).send({ success: false });
     }
   });
+
+  fastify.get("/projects/:projectId/forms/:formName/submissions", async function (request, reply) {
+    try {
+      const { projectId, formName }: any = request.params;
+      const { isDraft = false, gtDate, geDate, ltDate, leDate }: any = request.query;
+
+      const submissions = await getAllSubmissionByForm(
+        projectId,
+        formName,
+        isDraft,
+        gtDate,
+        geDate,
+        ltDate,
+        leDate
+      );
+      reply.code(200).send(submissions);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.get(
+    "/projects/:projectId/forms/:xmlFormId/submissions/:instanceId/attachments/:filename",
+    async function (request, reply) {
+      try {
+        const { projectId, xmlFormId, instanceId, filename }: any = request.params;
+
+        const submissions = await getAttachements(projectId, xmlFormId, instanceId, filename);
+        reply.code(200).send(submissions);
+      } catch (e) {
+        console.error("My error code is", e);
+        reply.code(500).send({ success: false });
+      }
+    }
+  );
+
+  fastify.get("/projects/:projectId/entityData/:name", async function (request, reply) {
+    try {
+      const { projectId, name }: any = request.params;
+
+      const entities = await getEntitiesMetaData(projectId, name);
+      reply.code(200).send(entities);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.post("/projects/:projectId/create/entityData/:name", async function (request, reply) {
+    try {
+      const { projectId, name }: any = request.params;
+      const payload = request.body;
+
+      const entities = await createEntityData(projectId, name, payload);
+      reply.code(200).send(entities);
+    } catch (e) {
+      console.error("My error code is", e);
+      reply.code(500).send({ success: false });
+    }
+  });
+
+  fastify.patch(
+    "/projects/:projectId/forms/:xmlFormId/submissions/:instanceId",
+    async function (request, reply) {
+      try {
+        const { projectId, xmlFormId, instanceId }: any = request.params;
+        const payload = request.body;
+
+        const submission = await patchSubmissionMetaData(projectId, xmlFormId, instanceId, payload);
+        reply.code(200).send(submission);
+      } catch (e) {
+        console.error("My error code is", e);
+        reply.code(500).send({ success: false });
+      }
+    }
+  );
 }

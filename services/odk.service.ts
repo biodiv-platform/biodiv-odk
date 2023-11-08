@@ -120,3 +120,80 @@ export const axGetProjectName = async (projectId: number) => {
 
   return res.data.name;
 };
+
+export const axGetAllSubmissionsByForm = async (
+  projectId: number,
+  formName: string,
+  isDraft?: boolean,
+  gtDate?: string,
+  geDate?: string,
+  ltDate?: string,
+  leDate?: string
+) => {
+  const filters = [];
+
+  if (gtDate) filters.push(`__system/submissionDate gt ${gtDate}`);
+  if (geDate) filters.push(`__system/submissionDate ge ${geDate}`);
+  if (ltDate) filters.push(`__system/submissionDate lt ${ltDate}`);
+  if (leDate) filters.push(`__system/submissionDate le ${leDate}`);
+
+  const filterString = filters.join(" and ");
+
+  const res = isDraft
+    ? await http.get(
+        `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${formName}/draft.svc/Submissions`,
+        REQ_OPTS
+      )
+    : await http.get(
+        `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${formName}.svc/Submissions${
+          filterString ? `?$filter=${filterString}` : ""
+        }`,
+        REQ_OPTS
+      );
+
+  return res.data;
+};
+
+export const axGetAttachmentsByForm = async (
+  projectId: number,
+  xmlFormId: string,
+  instanceId?: string,
+  filename?: string
+) => {
+  const res = await http.get(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}/attachments/${filename}`,
+    REQ_OPTS
+  );
+  return res.data;
+};
+
+export const axGetEntitiesMetaData = async (projectId: number, name: string) => {
+  const res = await http.get(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/datasets/${name}.svc/entities`,
+    REQ_OPTS
+  );
+  return res.data;
+};
+
+export const axGetCreateEntityData = async (projectId: number, name: string, payload: any) => {
+  const res = await http.post(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/datasets/${name}/entities`,
+    payload,
+    REQ_OPTS
+  );
+  return res.data;
+};
+
+export const axPatchSubmissionData = async (
+  projectId: number,
+  xmlFormId: string,
+  instanceId: string,
+  payload: any
+) => {
+  const res = await http.patch(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}`,
+    payload,
+    REQ_OPTS
+  );
+  return res.data;
+};

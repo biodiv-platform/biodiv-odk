@@ -3,10 +3,15 @@ import {
   axCreateAppUser,
   axCreateWebUser,
   axGetAllProjects,
+  axGetAllSubmissionsByForm,
   axGetAppUserByEmail,
+  axGetAttachmentsByForm,
+  axGetCreateEntityData,
+  axGetEntitiesMetaData,
   axGetllAppUser,
   axGetllUser,
   axGetWebUserByEmail,
+  axPatchSubmissionData,
   axRemoveAppUser,
   axRemoveWebUser,
   axUpdateWebUserDisplayName
@@ -190,5 +195,86 @@ export const getProjectListByAppUser = async (suserId: string) => {
     }
   } catch (error) {
     throw new Error(`Project not found for the given user id ${suserId}`);
+  }
+};
+
+export const getAllSubmissionByForm = async (
+  projectId: string,
+  formName: string,
+  isDraft?: boolean,
+  gtDate?: string,
+  geDate?: string,
+  ltDate?: string,
+  leDate?: string
+) => {
+  try {
+    const submissions = await axGetAllSubmissionsByForm(
+      Number(projectId),
+      formName,
+      isDraft,
+      gtDate,
+      geDate,
+      ltDate,
+      leDate
+    );
+    return submissions;
+  } catch (error) {
+    throw new Error("Unable to get Submissions");
+  }
+};
+
+export const getAttachements = async (
+  projectId: string,
+  xmlFormId: string,
+  instanceId: string,
+  filename: string
+) => {
+  try {
+    const submissions = await axGetAttachmentsByForm(
+      Number(projectId),
+      xmlFormId,
+      instanceId,
+      filename
+    );
+    return submissions;
+  } catch (error) {
+    throw new Error("Unable to get the attachment");
+  }
+};
+
+export const getEntitiesMetaData = async (projectId: string, name: string) => {
+  try {
+    const entities = await axGetEntitiesMetaData(Number(projectId), name);
+    return entities;
+  } catch (error) {
+    throw new Error("Unable to get the entities");
+  }
+};
+
+export const createEntityData = async (projectId: string, name: string, payload: any) => {
+  try {
+    const entities = await axGetCreateEntityData(Number(projectId), name, payload);
+    return entities;
+  } catch (error) {
+    throw new Error(`${error} ,Unable to create the entities data`);
+  }
+};
+
+export const patchSubmissionMetaData = async (
+  projectId: string,
+  xmlFormId: string,
+  instanceId: string,
+  payload: any
+) => {
+  try {
+    const submission = await axPatchSubmissionData(
+      Number(projectId),
+      xmlFormId,
+      instanceId,
+      payload
+    );
+    return submission;
+  } catch (error) {
+    throw new Error(`${error} ,Unable to patch the submission data`);
   }
 };
