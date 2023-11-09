@@ -205,7 +205,8 @@ export const getAllSubmissionByForm = async (
   gtDate?: string,
   geDate?: string,
   ltDate?: string,
-  leDate?: string
+  leDate?: string,
+  reviewState?: string
 ) => {
   try {
     const submissions = await axGetAllSubmissionsByForm(
@@ -215,7 +216,8 @@ export const getAllSubmissionByForm = async (
       gtDate,
       geDate,
       ltDate,
-      leDate
+      leDate,
+      reviewState
     );
     return submissions;
   } catch (error) {

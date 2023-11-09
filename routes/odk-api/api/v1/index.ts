@@ -162,7 +162,7 @@ export default async function (fastify: FastifyInstance) {
   fastify.get("/projects/:projectId/forms/:formName/submissions", async function (request, reply) {
     try {
       const { projectId, formName }: any = request.params;
-      const { isDraft = false, gtDate, geDate, ltDate, leDate }: any = request.query;
+      const { isDraft = false, gtDate, geDate, ltDate, leDate, reviewState }: any = request.query;
 
       const submissions = await getAllSubmissionByForm(
         projectId,
@@ -171,7 +171,8 @@ export default async function (fastify: FastifyInstance) {
         gtDate,
         geDate,
         ltDate,
-        leDate
+        leDate,
+        reviewState
       );
       reply.code(200).send(submissions);
     } catch (e) {

@@ -128,7 +128,8 @@ export const axGetAllSubmissionsByForm = async (
   gtDate?: string,
   geDate?: string,
   ltDate?: string,
-  leDate?: string
+  leDate?: string,
+  reviewState?: string
 ) => {
   const filters = [];
 
@@ -136,6 +137,7 @@ export const axGetAllSubmissionsByForm = async (
   if (geDate) filters.push(`__system/submissionDate ge ${geDate}`);
   if (ltDate) filters.push(`__system/submissionDate lt ${ltDate}`);
   if (leDate) filters.push(`__system/submissionDate le ${leDate}`);
+  if (reviewState) filters.push(`__system/reviewState eq ${reviewState}`);
 
   const filterString = filters.join(" and ");
 
