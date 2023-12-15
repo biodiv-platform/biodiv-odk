@@ -164,11 +164,14 @@ export const axGetAttachmentsByForm = async (
   instanceId?: string,
   filename?: string
 ) => {
-  const res = await http.get(
+  const response = await http.get(
     `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}/attachments/${filename}`,
-    REQ_OPTS
+    {
+      ...REQ_OPTS,
+      responseType: "arraybuffer"
+    }
   );
-  return res.data;
+  return response;
 };
 
 export const axGetEntitiesMetaData = async (projectId: number, name: string) => {

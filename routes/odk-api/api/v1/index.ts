@@ -18,6 +18,7 @@ import {
 } from "../../../../controller/odk.controller";
 import { axGetAppUserByEmail } from "../../../../services/odk.service";
 import getVerifiedUser from "../../../../utils/jwt";
+import { imageExtensions } from "../../../../utils/media";
 import getQRSVG from "../../../../utils/qrcode";
 
 export default async function (fastify: FastifyInstance) {
@@ -186,9 +187,14 @@ export default async function (fastify: FastifyInstance) {
     async function (request, reply) {
       try {
         const { projectId, xmlFormId, instanceId, filename }: any = request.params;
-
         const submissions = await getAttachements(projectId, xmlFormId, instanceId, filename);
-        reply.code(200).send(submissions);
+        const fileExtension = filename.split(".").pop()?.toLowerCase();
+        let contentType = "application/octet-stream";
+        if (fileExtension && imageExtensions[fileExtension]) {
+          contentType = imageExtensions[fileExtension];
+        }
+        reply.header("Content-Type", contentType);
+        reply.code(200).send(submissions.data);
       } catch (e) {
         console.error("My error code is", e);
         reply.code(500).send({ success: false });
