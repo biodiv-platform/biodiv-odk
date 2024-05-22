@@ -1,4 +1,6 @@
 // @ts-check
+import { DOMParser } from "xmldom"; // Importing DOMParser from xmldom
+
 import { OdkUserInterface } from "../controller/odk.controller";
 import { ODK_OPTS, REQ_OPTS } from "../static/constants";
 import http from "../utils/http";
@@ -203,4 +205,53 @@ export const axPatchSubmissionData = async (
     REQ_OPTS
   );
   return res.data;
+};
+
+interface Location {
+  lat: number;
+  lon: number;
+  alt: number;
+  acc: number;
+}
+
+interface Locations {
+  [key: string]: Location[];
+}
+
+export const axgetSubmissionLocationData = async (
+  projectId: number,
+  xmlFormId: string,
+  instanceId: string
+) => {
+  const res = await http.get(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}.xml`,
+    REQ_OPTS
+  );
+  // return res.data;
+
+  const xmlData = res.data;
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlData, "application/xml");
+
+  const farmPlots = xmlDoc.getElementsByTagName("farm_plot");
+
+  const locations: Locations = {};
+
+  for (let i = 0; i < farmPlots.length; i++) {
+    const locationString = farmPlots[i].getElementsByTagName("location")[0].textContent;
+    if (locationString) {
+      const coordinates = locationString.split(";").map((coords) => {
+        const [lat, lon, alt, acc] = coords.split(" ");
+        return {
+          lat: parseFloat(lat),
+          lon: parseFloat(lon),
+          alt: parseFloat(alt),
+          acc: parseFloat(acc)
+        } as Location;
+      });
+      locations[`farm_plot_${i}`] = coordinates;
+    }
+  }
+
+  return locations;
 };
