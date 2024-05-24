@@ -207,15 +207,9 @@ export const axPatchSubmissionData = async (
   return res.data;
 };
 
-interface Location {
-  lat: number;
-  lon: number;
-  alt: number;
-  acc: number;
-}
-
-interface Locations {
-  [key: string]: Location[];
+interface GeoJSON {
+  type: string;
+  coordinates: number[][][];
 }
 
 export const axgetSubmissionLocationData = async (
@@ -227,7 +221,6 @@ export const axgetSubmissionLocationData = async (
     `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}.xml`,
     REQ_OPTS
   );
-  // return res.data;
 
   const xmlData = res.data;
   const parser = new DOMParser();
@@ -235,21 +228,29 @@ export const axgetSubmissionLocationData = async (
 
   const farmPlots = xmlDoc.getElementsByTagName("farm_plot");
 
-  const locations: Locations = {};
+  const locations: GeoJSON = {
+    type: "Polygon",
+    coordinates: []
+  };
 
   for (let i = 0; i < farmPlots.length; i++) {
     const locationString = farmPlots[i].getElementsByTagName("location")[0].textContent;
     if (locationString) {
       const coordinates = locationString.split(";").map((coords) => {
-        const [lat, lon, alt, acc] = coords.split(" ");
-        return {
-          lat: parseFloat(lat),
-          lon: parseFloat(lon),
-          alt: parseFloat(alt),
-          acc: parseFloat(acc)
-        } as Location;
+        const [lat, lon] = coords.split(" ");
+        return [parseFloat(lon), parseFloat(lat)];
       });
-      locations[`farm_plot_${i}`] = coordinates;
+
+      // Close the polygon if it is not already closed
+      if (
+        coordinates.length > 0 &&
+        (coordinates[0][0] !== coordinates[coordinates.length - 1][0] ||
+          coordinates[0][1] !== coordinates[coordinates.length - 1][1])
+      ) {
+        coordinates.push(coordinates[0]);
+      }
+
+      locations.coordinates.push(coordinates);
     }
   }
 
