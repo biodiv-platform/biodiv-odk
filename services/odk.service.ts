@@ -241,7 +241,6 @@ export const axgetSubmissionLocationData = async (
         return [parseFloat(lon), parseFloat(lat)];
       });
 
-      // Close the polygon if it is not already closed
       if (
         coordinates.length > 0 &&
         (coordinates[0][0] !== coordinates[coordinates.length - 1][0] ||

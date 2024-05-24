@@ -285,16 +285,12 @@ export const patchSubmissionMetaData = async (
 export const getSubmissionLocationData = async (
   projectId: string,
   xmlFormId: string,
-  instanceId: string,
+  instanceId: string
 ) => {
   try {
-    const submission = await axgetSubmissionLocationData(
-      Number(projectId),
-      xmlFormId,
-      instanceId,
-    );
+    const submission = await axgetSubmissionLocationData(Number(projectId), xmlFormId, instanceId);
     return submission;
   } catch (error) {
-    throw new Error(`${error} ,Unable to patch the submission data`);
+    throw new Error(`${error} ,Unable to get location data`);
   }
 };
