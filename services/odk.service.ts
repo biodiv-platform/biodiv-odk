@@ -1,4 +1,6 @@
 // @ts-check
+import { DOMParser } from "xmldom";
+
 import { OdkUserInterface } from "../controller/odk.controller";
 import { ODK_OPTS, REQ_OPTS } from "../static/constants";
 import http from "../utils/http";
@@ -203,4 +205,53 @@ export const axPatchSubmissionData = async (
     REQ_OPTS
   );
   return res.data;
+};
+
+interface GeoJSON {
+  type: string;
+  coordinates: number[][][][];
+}
+
+export const axgetSubmissionLocationData = async (
+  projectId: number,
+  xmlFormId: string,
+  instanceId: string
+) => {
+  const res = await http.get(
+    `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}.xml`,
+    REQ_OPTS
+  );
+
+  const xmlData = res.data;
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlData, "application/xml");
+
+  const farmPlots = xmlDoc.getElementsByTagName("farm_plot");
+
+  const locations: GeoJSON = {
+    type: "MultiPolygon",
+    coordinates: []
+  };
+
+  for (let i = 0; i < farmPlots.length; i++) {
+    const locationString = farmPlots[i].getElementsByTagName("location")[0].textContent;
+    if (locationString) {
+      const coordinates = locationString.split(";").map((coords) => {
+        const [lat, lon] = coords.split(" ");
+        return [parseFloat(lon), parseFloat(lat)];
+      });
+
+      if (
+        coordinates.length > 0 &&
+        (coordinates[0][0] !== coordinates[coordinates.length - 1][0] ||
+          coordinates[0][1] !== coordinates[coordinates.length - 1][1])
+      ) {
+        coordinates.push(coordinates[0]);
+      }
+
+      locations.coordinates.push([coordinates]);
+    }
+  }
+
+  return locations;
 };
