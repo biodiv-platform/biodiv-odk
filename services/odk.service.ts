@@ -5,6 +5,11 @@ import { OdkUserInterface } from "../controller/odk.controller";
 import { ODK_OPTS, REQ_OPTS } from "../static/constants";
 import http from "../utils/http";
 
+interface GeoJSON {
+  type: string;
+  coordinates: number[][][][]; // Outer array is for multiple polygons, each containing an array of linear rings.
+}
+
 export const axGetAppUserByEmail = async (
   userName: string,
   projectId: number,
@@ -207,11 +212,6 @@ export const axPatchSubmissionData = async (
   return res.data;
 };
 
-interface GeoJSON {
-  type: string;
-  coordinates: number[][][];
-}
-
 export const axgetSubmissionLocationData = async (
   projectId: number,
   xmlFormId: string,
@@ -229,7 +229,7 @@ export const axgetSubmissionLocationData = async (
   const farmPlots = xmlDoc.getElementsByTagName("farm_plot");
 
   const locations: GeoJSON = {
-    type: "Polygon",
+    type: "MultiPolygon",
     coordinates: []
   };
 
@@ -241,6 +241,7 @@ export const axgetSubmissionLocationData = async (
         return [parseFloat(lon), parseFloat(lat)];
       });
 
+      // Ensure the polygon is closed
       if (
         coordinates.length > 0 &&
         (coordinates[0][0] !== coordinates[coordinates.length - 1][0] ||
@@ -249,7 +250,8 @@ export const axgetSubmissionLocationData = async (
         coordinates.push(coordinates[0]);
       }
 
-      locations.coordinates.push(coordinates);
+      // Ensure each set of coordinates is wrapped in an array
+      locations.coordinates.push([coordinates]);
     }
   }
 
