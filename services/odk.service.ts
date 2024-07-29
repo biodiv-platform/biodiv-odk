@@ -1,5 +1,5 @@
 // @ts-check
-import { DOMParser } from "xmldom"; // Importing DOMParser from xmldom
+import { DOMParser } from "xmldom";
 
 import { OdkUserInterface } from "../controller/odk.controller";
 import { ODK_OPTS, REQ_OPTS } from "../static/constants";
@@ -7,7 +7,7 @@ import http from "../utils/http";
 
 interface GeoJSON {
   type: string;
-  coordinates: number[][][][]; // Outer array is for multiple polygons, each containing an array of linear rings.
+  coordinates: number[][][][];
 }
 
 export const axGetAppUserByEmail = async (
@@ -241,7 +241,6 @@ export const axgetSubmissionLocationData = async (
         return [parseFloat(lon), parseFloat(lat)];
       });
 
-      // Ensure the polygon is closed
       if (
         coordinates.length > 0 &&
         (coordinates[0][0] !== coordinates[coordinates.length - 1][0] ||
@@ -250,7 +249,6 @@ export const axgetSubmissionLocationData = async (
         coordinates.push(coordinates[0]);
       }
 
-      // Ensure each set of coordinates is wrapped in an array
       locations.coordinates.push([coordinates]);
     }
   }
