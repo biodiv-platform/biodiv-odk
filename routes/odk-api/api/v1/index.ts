@@ -13,6 +13,7 @@ import {
   getEntitiesMetaData,
   getIsWebUer,
   getProjectListByAppUser,
+  getSubmissionLocationData,
   OdkUserInterface,
   patchSubmissionMetaData
 } from "../../../../controller/odk.controller";
@@ -235,6 +236,21 @@ export default async function (fastify: FastifyInstance) {
         const payload = request.body;
 
         const submission = await patchSubmissionMetaData(projectId, xmlFormId, instanceId, payload);
+        reply.code(200).send(submission);
+      } catch (e) {
+        console.error("My error code is", e);
+        reply.code(500).send({ success: false });
+      }
+    }
+  );
+
+  fastify.get(
+    "/projects/:projectId/forms/:xmlFormId/submissions/location/:instanceId",
+    async function (request, reply) {
+      try {
+        const { projectId, xmlFormId, instanceId }: any = request.params;
+
+        const submission = await getSubmissionLocationData(projectId, xmlFormId, instanceId);
         reply.code(200).send(submission);
       } catch (e) {
         console.error("My error code is", e);

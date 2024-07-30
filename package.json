@@ -38,6 +38,7 @@
     "jsonwebtoken": "^8.5.1",
     "pako": "^2.0.4",
     "qrcode-svg": "^1.1.0",
+    "xmldom": "^0.6.0",
     "zod": "^3.20.2",
     "zod-to-json-schema": "^3.20.1"
   },
@@ -47,6 +48,7 @@
     "@types/node": "^18.11.17",
     "@types/pako": "^2.0.0",
     "@types/qrcode-svg": "^1.1.0",
+    "@types/xmldom": "^0.1.34",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
     "eslint": "^8.25.0",
