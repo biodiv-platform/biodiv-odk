@@ -237,7 +237,7 @@ export const axgetSubmissionLocationData = async (
     const locationString = farmPlots[i].getElementsByTagName("location")[0].textContent;
     if (locationString) {
       const coordinates = locationString.split(";").map((coords) => {
-        const [lat, lon] = coords.split(" ");
+        const [lat, lon] = coords.trim().split(" ").slice(0, 2);
         return [parseFloat(lon), parseFloat(lat)];
       });
 
