@@ -207,16 +207,11 @@ export const axPatchSubmissionData = async (
   return res.data;
 };
 
-interface GeoJSON {
-  type: string;
-  coordinates: number[][][][];
-}
-
 export const axgetSubmissionLocationData = async (
   projectId: number,
   xmlFormId: string,
   instanceId: string
-) => {
+): Promise<GeoJSON.FeatureCollection> => {
   const res = await http.get(
     `${ODK_OPTS.URL}v1/projects/${projectId}/forms/${xmlFormId}/submissions/${instanceId}.xml`,
     REQ_OPTS
@@ -228,16 +223,13 @@ export const axgetSubmissionLocationData = async (
 
   const farmPlots = xmlDoc.getElementsByTagName("farm_plot");
 
-  const locations: GeoJSON = {
-    type: "MultiPolygon",
-    coordinates: []
-  };
+  const features: GeoJSON.Feature[] = [];
 
   for (let i = 0; i < farmPlots.length; i++) {
-    const locationString = farmPlots[i].getElementsByTagName("location")[0].textContent;
+    const locationString = farmPlots[i].getElementsByTagName("location")[0]?.textContent;
     if (locationString) {
       const coordinates = locationString.split(";").map((coords) => {
-        const [lat, lon] = coords.trim().split(" ").slice(0, 2);
+        const [lat, lon] = coords.split(" ");
         return [parseFloat(lon), parseFloat(lat)];
       });
 
@@ -249,9 +241,23 @@ export const axgetSubmissionLocationData = async (
         coordinates.push(coordinates[0]);
       }
 
-      locations.coordinates.push([coordinates]);
+      const feature: GeoJSON.Feature = {
+        type: "Feature",
+        geometry: {
+          type: "Polygon",
+          coordinates: [coordinates]
+        },
+        properties: {}
+      };
+
+      features.push(feature);
     }
   }
 
-  return locations;
+  const featureCollection: GeoJSON.FeatureCollection = {
+    type: "FeatureCollection",
+    features: features
+  };
+
+  return featureCollection;
 };
