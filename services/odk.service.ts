@@ -229,28 +229,30 @@ export const axgetSubmissionLocationData = async (
     const locationString = farmPlots[i].getElementsByTagName("location")[0]?.textContent;
     if (locationString) {
       const coordinates = locationString.split(";").map((coords) => {
-        const [lat, lon] = coords.split(" ");
+        const [lat, lon, ,] = coords.trim().split(" ");
         return [parseFloat(lon), parseFloat(lat)];
       });
 
-      if (
-        coordinates.length > 0 &&
-        (coordinates[0][0] !== coordinates[coordinates.length - 1][0] ||
-          coordinates[0][1] !== coordinates[coordinates.length - 1][1])
-      ) {
-        coordinates.push(coordinates[0]);
+      if (coordinates.length > 0) {
+        // Ensure the polygon is closed
+        if (
+          coordinates[0][0] !== coordinates[coordinates.length - 1][0] ||
+          coordinates[0][1] !== coordinates[coordinates.length - 1][1]
+        ) {
+          coordinates.push(coordinates[0]);
+        }
+
+        const feature: GeoJSON.Feature = {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [coordinates]
+          },
+          properties: {}
+        };
+
+        features.push(feature);
       }
-
-      const feature: GeoJSON.Feature = {
-        type: "Feature",
-        geometry: {
-          type: "Polygon",
-          coordinates: [coordinates]
-        },
-        properties: {}
-      };
-
-      features.push(feature);
     }
   }
 
